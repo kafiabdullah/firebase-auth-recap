@@ -14,6 +14,8 @@ function App() {
   const [user, setUser] = useState({});
   var googleProvider = new firebase.auth.GoogleAuthProvider();
   var fbProvider = new firebase.auth.FacebookAuthProvider();
+  var gitProvider = new firebase.auth.GithubAuthProvider();
+
 
 
 
@@ -35,6 +37,8 @@ function App() {
         var errorMessage = error.message;
         var email = error.email;
         var credential = error.credential;
+        console.log(errorCode, errorMessage, email, credential);
+
       });
   }
 
@@ -58,8 +62,35 @@ function App() {
         var errorMessage = error.message;
         var email = error.email;
         var credential = error.credential;
+        console.log(errorCode, errorMessage, email, credential);
+
 
         // ...
+      });
+  }
+
+  const handleSingInGithub = () => {
+    firebase
+      .auth()
+      .signInWithPopup(gitProvider)
+      .then((result) => {
+        /** @type {firebase.auth.OAuthCredential} */
+        var credential = result.credential;
+
+        var token = credential.accessToken;
+
+        var user = result.user;
+        setUser(user)
+        console.log('login with github', user);
+
+      }).catch((error) => {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        var email = error.email;
+        var credential = error.credential;
+        console.log(errorCode, errorMessage, email, credential);
+
       });
   }
 
@@ -67,8 +98,11 @@ function App() {
     <div className="App">
       <button onClick={handleSignInGoogle}> Sign in with Google</button>
       <br />
-      <br/>
+      <br />
       <button onClick={handleSingInFb}>Sign in with Facebook</button>
+      <br />
+      <br />
+      <button onClick={handleSingInGithub}>Sign in with Github</button>
 
 
       <h3>Name: {user.displayName}</h3>
