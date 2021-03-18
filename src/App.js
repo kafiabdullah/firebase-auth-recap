@@ -8,12 +8,14 @@ firebase.initializeApp(firebaseConfig);
 
 function App() {
   const [user, setUser] = useState({});
-  var provider = new firebase.auth.GoogleAuthProvider();
+  var googleProvider = new firebase.auth.GoogleAuthProvider();
+  var fbProvider = new firebase.auth.FacebookAuthProvider();
+
 
 
   const handleSignInGoogle = () => {
     firebase.auth()
-      .signInWithPopup(provider)
+      .signInWithPopup(googleProvider)
       .then((result) => {
         /** @type {firebase.auth.OAuthCredential} */
         var credential = result.credential;
@@ -35,12 +37,41 @@ function App() {
       });
   }
 
+  const handleSingInFb = () => {
+    firebase
+      .auth()
+      .signInWithPopup(fbProvider)
+      .then((result) => {
+        /** @type {firebase.auth.OAuthCredential} */
+        var credential = result.credential;
+
+        var user = result.user;
+
+        var accessToken = credential.accessToken;
+
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        var email = error.email;
+        var credential = error.credential;
+
+        // ...
+      });
+  }
+
   return (
     <div className="App">
       <button onClick={handleSignInGoogle}> Sign in with Google</button>
+      <br />
+
       <h3>Name: {user.displayName}</h3>
       <p>Email: {user.email}</p>
       <img src={user.photoURL} alt="" />
+      <br />
+      <button onClick={handleSingInFb}>Sign in with Facebook</button>
     </div>
   );
 }
