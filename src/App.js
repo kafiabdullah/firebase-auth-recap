@@ -33,11 +33,8 @@ function App() {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        // The emailof the user's account used.
         var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
         var credential = error.credential;
-        // ...
       });
   }
 
@@ -52,8 +49,8 @@ function App() {
         var user = result.user;
 
         var accessToken = credential.accessToken;
+        setUser(user)
 
-        // ...
       })
       .catch((error) => {
         // Handle Errors here.
@@ -70,12 +67,14 @@ function App() {
     <div className="App">
       <button onClick={handleSignInGoogle}> Sign in with Google</button>
       <br />
+      <br/>
+      <button onClick={handleSingInFb}>Sign in with Facebook</button>
+
 
       <h3>Name: {user.displayName}</h3>
       <p>Email: {user.email}</p>
       <img src={user.photoURL} alt="" />
       <br />
-      <button onClick={handleSingInFb}>Sign in with Facebook</button>
     </div>
   );
 }
